@@ -24,8 +24,6 @@ This pattern allows the LLM to reflect and critique its outputs, following the n
   - [3. `completions_create` Function](#3-completions_create-function)
   - [4. `build_prompt_structure` Function](#4-build_prompt_structure-function)
   - [5. `update_chat_history` Function](#5-update_chat_history-function)
-- [References](#references)
-- [License](#license)
 
 ## Features
 ### 1. ChatHistory
