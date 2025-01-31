@@ -12,6 +12,7 @@ This pattern allows the LLM to reflect and critique its outputs, following the n
 ![image](https://github.com/user-attachments/assets/6ac054b2-c822-4cc6-b349-2196525ef092)
 
 ## 2. Tool Call Pattern
+![image](https://github.com/user-attachments/assets/d148e782-61ab-4055-b158-391f8b81a132)
 
 
 ---
@@ -30,6 +31,7 @@ This pattern allows the LLM to reflect and critique its outputs, following the n
   - [7. `Tool` Class](#7-tool-class)
   - [8. `tool` Decorator](#8-tool-decorator)
   - [9. `validate_arguments` Function](#9-validate_arguments-function)
+  - [10. `extract_tag_content` Function](#10-extract_tag_content-function)
 - [References](#references)
 
 ## Features
@@ -199,6 +201,54 @@ def validate_arguments(tool_call: dict, tool_signature: dict) -> dict:
   - Uses a simple type-mapping dictionary to enforce correct types.
   - Converts arguments to the correct type if they don’t match.
 - **Use Case**: Prevents runtime errors due to incorrect data types when calling dynamically loaded tools.
+- 
+### 10. `extract_tag_content` Function
+This function extracts all content enclosed by specified tags (e.g., `<thought>`, `<response>`, etc.) from a given text.
+```python
+import re
+from dataclasses import dataclass
+
+@dataclass
+class TagContentResult:
+    """
+    A data class to represent the result of extracting tag content.
+
+    Attributes:
+        content (List[str]): A list of strings containing the content found between the specified tags.
+        found (bool): A flag indicating whether any content was found for the given tag.
+    """
+    content: list[str]
+    found: bool
+
+def extract_tag_content(text: str, tag: str) -> TagContentResult:
+    """
+    Extracts all content enclosed by specified tags (e.g., <thought>, <response>, etc.).
+
+    Parameters:
+        text (str): The input string containing multiple potential tags.
+        tag (str): The name of the tag to search for (e.g., 'thought', 'response').
+
+    Returns:
+        TagContentResult: A dataclass instance containing extracted content and a found flag.
+    """
+    # Build the regex pattern dynamically to find multiple occurrences of the tag
+    tag_pattern = rf"<{tag}>(.*?)</{tag}>"
+
+    # Use findall to capture all content between the specified tag
+    matched_contents = re.findall(tag_pattern, text, re.DOTALL)
+
+    # Return the dataclass instance with the result
+    return TagContentResult(
+        content=[content.strip() for content in matched_contents],
+        found=bool(matched_contents),
+    )
+```
+- **Purpose**: This function allows easy extraction of structured data enclosed within specific tags.
+- **How it Works**:
+  - Uses regex to find and extract content within a specified tag.
+  - Returns a structured result using a dataclass with a `content` list and a `found` flag.
+- **Use Case**: Useful for parsing structured text, such as extracting insights from AI model responses formatted with XML-like tags.
+
 
 
 # References
