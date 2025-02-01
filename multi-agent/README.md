@@ -1,3 +1,7 @@
+# Table of Contents
+- [Generic Agent Class](#Agent Class)
+- [Crew Class](#Crew Class)
+
 # Agent Class
 ## 1. Workflow of Agent Class which can be multi agents working together in a crew
 ![WhatsApp Image 2025-02-01 at 12 59 32 PM](https://github.com/user-attachments/assets/37d6a735-584d-4ccd-b574-831ccd0755c7)
@@ -135,4 +139,185 @@ output_A = agent_A.run()
 # Run the second agent after receiving context
 output_B = agent_B.run()
 ```
+
+# Crew Class
+
+## Overview
+
+The `Crew` class represents a group of agents working together within a structured execution environment. It allows for managing multiple agents, handling dependencies between them, and executing them in a controlled manner using **topological sorting**.
+
+### Key Features:
+
+- Manages a collection of agents.
+- Supports **dependency resolution** and **topological sorting**.
+- Provides **context management** using Python's `with` statement.
+- Visualizes agent dependencies as a **Directed Acyclic Graph (DAG)**.
+- Executes agents in the correct dependency order.
+
+## Class Definition
+
+```python
+class Crew:
+```
+
+The `Crew` class acts as a container for agents, ensuring they execute in an orderly fashion based on dependencies.
+
+### Attributes:
+
+| Attribute      | Type   | Description                                                                         |
+| -------------- | ------ | ----------------------------------------------------------------------------------- |
+| `current_crew` | `Crew` | A class-level variable that tracks the active Crew instance in the context manager. |
+| `agents`       | `list` | A list of agents registered in this Crew.                                           |
+
+## Methods
+
+### `__init__()`
+
+```python
+    def __init__(self):
+        self.agents = []
+```
+
+This initializes a new Crew instance with an empty list of agents.
+
+### `__enter__()` (Context Manager Entry)
+
+```python
+    def __enter__(self):
+        Crew.current_crew = self
+        return self
+```
+
+When a `Crew` instance is used within a `with` statement, this method sets it as the current active crew.
+
+### `__exit__(exc_type, exc_val, exc_tb)` (Context Manager Exit)
+
+```python
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        Crew.current_crew = None
+```
+
+When exiting the `with` block, it resets `current_crew` to `None`, ensuring no lingering references.
+
+### `add_agent(agent)`
+
+```python
+    def add_agent(self, agent):
+        self.agents.append(agent)
+```
+
+Adds an agent to the crew.
+
+**Arguments:**
+
+- `agent`: The agent object to be added.
+
+### `register_agent(agent)` (Static Method)
+
+```python
+    @staticmethod
+    def register_agent(agent):
+        if Crew.current_crew is not None:
+            Crew.current_crew.add_agent(agent)
+```
+
+Registers an agent with the currently active crew instance.
+
+**Arguments:**
+
+- `agent`: The agent to register.
+
+### `topological_sort()`
+
+```python
+    def topological_sort(self):
+```
+
+This method sorts the agents **topologically** based on their dependencies, ensuring execution order is maintained.
+
+#### Code Implementation:
+
+```python
+    def topological_sort(self):
+        in_degree = {agent: len(agent.dependencies) for agent in self.agents}
+        queue = deque([agent for agent in self.agents if in_degree[agent] == 0])
+        sorted_agents = []
+
+        while queue:
+            current_agent = queue.popleft()
+            sorted_agents.append(current_agent)
+
+            for dependent in current_agent.dependents:
+                in_degree[dependent] -= 1
+                if in_degree[dependent] == 0:
+                    queue.append(dependent)
+
+        if len(sorted_agents) != len(self.agents):
+            raise ValueError("Circular dependencies detected among agents, preventing a valid topological sort")
+
+        return sorted_agents
+```
+
+#### Step-by-Step Explanation:
+
+1. **Initialize Dependency Tracking:**
+   - Create a dictionary `in_degree` that maps each agent to the number of dependencies it has.
+   - This ensures we can track how many dependencies remain for each agent.
+
+2. **Identify Independent Agents:**
+   - Use a deque (double-ended queue) to store all agents with `in_degree` of 0 (no dependencies).
+   - These agents can be processed immediately.
+
+3. **Process Agents in Order:**
+   - Pop an agent from the front of the queue and append it to `sorted_agents`.
+   - For each dependent agent, reduce its `in_degree` by 1.
+   - If a dependent agent's `in_degree` reaches 0, it is added to the queue for processing.
+
+4. **Detect Cycles:**
+   - If `sorted_agents` does not contain all agents, it means a circular dependency exists, raising a `ValueError`.
+
+#### Returns:
+
+- A list of agents sorted in topological order.
+
+#### Raises:
+
+- `ValueError`: If circular dependencies exist.
+
+### `plot()` (Graph Visualization)
+
+```python
+    def plot(self):
+```
+
+Generates a **Directed Acyclic Graph (DAG)** using Graphviz to visualize agent dependencies.
+
+**Process:**
+
+1. Creates a **Graphviz Digraph**.
+2. Adds nodes for each agent.
+3. Draws edges from dependencies to dependents.
+4. Returns the Graphviz object.
+
+**Returns:**
+
+- `Digraph`: A Graphviz graph object.
+
+### `run()`
+
+```python
+    def run(self):
+```
+
+Executes all agents in the crew **in topologically sorted order**.
+
+**Process:**
+
+1. Calls `topological_sort()` to determine execution order.
+2. Iterates over sorted agents.
+3. Calls each agent’s `run()` method.
+4. Uses `fancy_print` to log execution.
+5. Prints the output in red (using `colorama.Fore.RED`).
+
+##
 
