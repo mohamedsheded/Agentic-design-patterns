@@ -1,6 +1,6 @@
 # Table of Contents
-- [Generic Agent Class](#Agent Class)
-- [Crew Class](#Crew Class)
+- [Generic Agent Class](#Agent-Class)
+- [Crew Class](#Crew-Class)
 
 # Agent Class
 ## 1. Workflow of Agent Class which can be multi agents working together in a crew
