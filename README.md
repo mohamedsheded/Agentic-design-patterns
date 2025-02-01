@@ -1,42 +1,59 @@
 # Agentic Design Patterns
 
-This section will provide insights into various agentic design patterns that help in structuring AI-driven systems efficiently..
+This section provides insights into various agentic design patterns that help structure AI-driven systems efficiently.
+
+## Table of Contents
+- [Agentic Design Patterns](#agentic-design-patterns)
+  - [1. Reflection Pattern](#1-reflection-pattern)
+  - [2. Tool Call Pattern](#2-tool-call-pattern)
+  - [3. ReAct "Planning" Pattern](#3-react-planning-pattern)
+  - [4. Multi-Agent Pattern](#4-multi-agent-pattern)
+- [Useful Utils to Construct an Agentic Pattern](#useful-utils-to-construct-an-agentic-pattern)
+  - [Features](#features)
+    - [1. ChatHistory](#1-chathistory)
+    - [2. FixedFirstChatHistory](#2-fixedfirstchathistory)
+  - [Additional Functionality](#additional-functionality)
+    - [3. `completions_create` Function](#3-completions_create-function)
+    - [4. `build_prompt_structure` Function](#4-build_prompt_structure-function)
+    - [5. `update_chat_history` Function](#5-update_chat_history-function)
+    - [6. `get_fn_signature` Function](#6-get_fn_signature-function)
+    - [7. `Tool` Class](#7-tool-class)
+    - [8. `tool` Decorator](#8-tool-decorator)
+    - [9. `validate_arguments` Function](#9-validate_arguments-function)
+    - [10. `extract_tag_content` Function](#10-extract_tag_content-function)
+- [References](#references)
 
 ## 1. Reflection Pattern
-This pattern allows the LLM to reflect and critique its outputs, following the next steps:
+[Reflection agent class](https://github.com/mohamedsheded/Agentic-design-patterns/tree/main/reflection-agent)
 
-1. The LLM generates a candidate output. If you look at the diagram above, it happens inside the "Generate" box.
+This pattern allows the LLM to reflect and critique its outputs, following these steps:
+
+1. The LLM generates a candidate output.
 2. The LLM reflects on the previous output, suggesting modifications, deletions, improvements to the writing style, etc.
-3. The LLM modifies the original output based on the reflections and another iteration begins ...
-### steps of iteration
+3. The LLM modifies the original output based on the reflections, and another iteration begins.
+
+### Steps of Iteration
 ![image](https://github.com/user-attachments/assets/6ac054b2-c822-4cc6-b349-2196525ef092)
 
 ## 2. Tool Call Pattern
+[Tool call agent Class](https://github.com/mohamedsheded/Agentic-design-patterns/blob/main/tool_call-agent/README.md)
+
 ![image](https://github.com/user-attachments/assets/d148e782-61ab-4055-b158-391f8b81a132)
 
-## 3. ReAct "planning" Pattern
-1. ![CamScanner 02-01-2025 10 39n_2](https://github.com/user-attachments/assets/bfda4c6d-04e7-44fc-893b-34cd8fb4fcf1)
-2.  ![CamScanner 02-01-2025 10 39n_1](https://github.com/user-attachments/assets/985f8c04-ab10-4fea-adb0-4942a88069b6)
+## 3. ReAct "Planning" Pattern
+[Planning agent Class](https://github.com/mohamedsheded/Agentic-design-patterns/blob/main/planning-agent/README.md)
 
+1. ![CamScanner 02-01-2025 10 39n_2](https://github.com/user-attachments/assets/bfda4c6d-04e7-44fc-893b-34cd8fb4fcf1)
+2. ![CamScanner 02-01-2025 10 39n_1](https://github.com/user-attachments/assets/985f8c04-ab10-4fea-adb0-4942a88069b6)
+
+## 4. Multi-Agent Pattern
+[Multi-agent class](https://github.com/mohamedsheded/Agentic-design-patterns/blob/main/multi-agent/README.md)
+
+![WhatsApp Image 2025-02-01 at 12 59 32 PM](https://github.com/user-attachments/assets/041c2897-b6db-45e0-8a03-f9e4e6f44fd4)
 
 ---
 
 # Useful Utils to Construct an Agentic Pattern
-
-## Table of Contents
-- [Features](#features)
-  - [1. ChatHistory](#1-chathistory)
-  - [2. FixedFirstChatHistory](#2-fixedfirstchathistory)
-- [Additional Functionality](#additional-functionality)
-  - [3. `completions_create` Function](#3-completions_create-function)
-  - [4. `build_prompt_structure` Function](#4-build_prompt_structure-function)
-  - [5. `update_chat_history` Function](#5-update_chat_history-function)
-  - [6. `get_fn_signature` Function](#6-get_fn_signature-function)
-  - [7. `Tool` Class](#7-tool-class)
-  - [8. `tool` Decorator](#8-tool-decorator)
-  - [9. `validate_arguments` Function](#9-validate_arguments-function)
-  - [10. `extract_tag_content` Function](#10-extract_tag_content-function)
-- [References](#references)
 
 ## Features
 ### 1. ChatHistory
@@ -253,12 +270,10 @@ def extract_tag_content(text: str, tag: str) -> TagContentResult:
   - Returns a structured result using a dataclass with a `content` list and a `found` flag.
 - **Use Case**: Useful for parsing structured text, such as extracting insights from AI model responses formatted with XML-like tags.
 
-
+---
 
 # References
 - [DeepLearning.AI agents article](https://www.deeplearning.ai/the-batch/how-agents-can-improve-llm-performance/?ref=dl-staging-website.ghost.io)
 - [The Neural Maze playlist](https://www.youtube.com/watch?v=os22Q7nEXPA&list=PLacQJwuclt_sK_pUPzBpfeWyiL1QOSMRQ)
 - [Reference code from the Neuralmaze](https://github.com/neural-maze/agentic_patterns)
-
----
 
