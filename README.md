@@ -14,6 +14,10 @@ This pattern allows the LLM to reflect and critique its outputs, following the n
 ## 2. Tool Call Pattern
 ![image](https://github.com/user-attachments/assets/d148e782-61ab-4055-b158-391f8b81a132)
 
+## 3. ReAct "planning" Pattern
+1. ![CamScanner 02-01-2025 10 39n_2](https://github.com/user-attachments/assets/bfda4c6d-04e7-44fc-893b-34cd8fb4fcf1)
+2.  ![CamScanner 02-01-2025 10 39n_1](https://github.com/user-attachments/assets/985f8c04-ab10-4fea-adb0-4942a88069b6)
+
 
 ---
 
