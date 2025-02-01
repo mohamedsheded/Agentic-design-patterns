@@ -141,6 +141,7 @@ output_B = agent_B.run()
 ```
 
 # Crew Class
+![WhatsApp Image 2025-02-01 at 6 17 07 PM](https://github.com/user-attachments/assets/00f9fc60-c9fc-4514-b7c1-78cb838e41e3)
 
 ## Overview
 
