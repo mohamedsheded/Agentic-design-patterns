@@ -1,4 +1,8 @@
-# Agent Class Documentation
+# Agent Class
+## 1. Workflow of Agent Class which can be multi agents working together in a crew
+![WhatsApp Image 2025-02-01 at 12 59 32 PM](https://github.com/user-attachments/assets/37d6a735-584d-4ccd-b574-831ccd0755c7)
+## 2. Each agent from agent class is a ReAct Agent 
+![CamScanner 02-01-2025 10 39n_2](https://github.com/user-attachments/assets/82a5c5ed-d747-4e73-9608-bea03f398215)
 
 ## Overview
 
